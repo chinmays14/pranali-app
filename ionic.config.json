@@ -1,0 +1,7 @@
+{
+  "name": "Pranali App",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue"
+}
