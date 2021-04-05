@@ -1,4 +1,5 @@
 import { createStore } from "vuex";
+import authentication from "./authentication"
 
 export const store = createStore({
   state() {
@@ -53,6 +54,9 @@ export const store = createStore({
     addMemory(context, memoryData) {
       context.commit('addMemory', memoryData);
     }
+  },
+  modules: {
+    authentication,
   }
 });
 
