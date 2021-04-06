@@ -1,21 +1,40 @@
 <template>
   <ion-page>
-    <ion-header :translucent="true">
-      <ion-toolbar>
-        <ion-title>LOGIN PAGE</ion-title>
+    <!-- <ion-header :translucent="true">
+      <ion-toolbar class="ion-text-center">
+        <ion-title>Pranali App</ion-title>
       </ion-toolbar>
-    </ion-header>
+    </ion-header> -->
 
     <ion-content :fullscreen="true" class="ion-padding">
-      <ion-card>
-        <ion-card-content>
-          <ion-label position="stacked">Email</ion-label>
-          <ion-input type="text" v-model="credentials.email"></ion-input>
-          <ion-label position="stacked">Password</ion-label>
-          <ion-input type="password" v-model="credentials.password"></ion-input>
-          <ion-button @click="doLogin()">Login</ion-button>
-        </ion-card-content>
-      </ion-card>
+      <div class="login-grid">
+        <ion-img :src="'/assets/img/pranali.png'"> </ion-img>
+
+        <ion-card>
+          <ion-card-content>
+            <form class="ion-padding" @submit.prevent="doLogin">
+              <ion-list>
+                <ion-item>
+                  <ion-label position="stacked">Email</ion-label>
+                  <ion-input
+                    type="text"
+                    v-model="credentials.email"
+                  ></ion-input>
+                </ion-item>
+                <ion-item>
+                  <ion-label position="stacked">Password</ion-label>
+                  <ion-input
+                    type="password"
+                    v-model="credentials.password"
+                  ></ion-input>
+                </ion-item>
+                <!-- <ion-button @click="doLogin()">Login</ion-button> -->
+              </ion-list>
+              <ion-button expand="full" type="submit"> Login </ion-button>
+            </form>
+          </ion-card-content>
+        </ion-card>
+      </div>
     </ion-content>
   </ion-page>
 </template>
@@ -23,35 +42,37 @@
 <script >
 import {
   IonContent,
-  IonHeader,
+  // IonHeader,
   IonPage,
-  IonTitle,
-  IonToolbar,
+  // IonTitle,
+  // IonToolbar,
   IonButton,
   IonInput,
   IonLabel,
   IonCard,
-  IonCardContent
+  IonCardContent,
+  IonImg,
 } from "@ionic/vue";
 import store from "../store/index";
 
-export default{
+export default {
   name: "LoginPage",
   components: {
     IonContent,
-    IonHeader,
+    // IonHeader,
     IonPage,
-    IonTitle,
-    IonToolbar,
+    // IonTitle,
+    // IonToolbar,
     IonButton,
     IonInput,
     IonLabel,
     IonCard,
-    IonCardContent
+    IonCardContent,
+    IonImg,
   },
   data() {
     return {
-      credentials: { email: "", password: "" }
+      credentials: { email: "", password: "" },
     };
   },
   methods: {
@@ -67,9 +88,9 @@ export default{
       } catch (error) {
         alert(error);
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -96,5 +117,13 @@ export default{
 
 #container a {
   text-decoration: none;
+}
+
+.login-grid {
+  display: grid;
+  margin: 1rem 0 0;
+  grid-template-rows: .75fr 1fr;
+  justify-content: center;
+  align-items: center;
 }
 </style>
