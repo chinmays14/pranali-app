@@ -7,9 +7,13 @@
   >
     <ion-content>
       <ion-list id="inbox-list">
-        <ion-list-header>Inbox</ion-list-header>
-        <ion-note class="ion-padding">{{ currentUser?.email }}</ion-note>
-
+        <ion-item lines="none">
+          <ion-thumbnail>
+            <ion-img :src="'assets/img/pranali.png'">
+            </ion-img>
+          </ion-thumbnail>
+          <ion-list-header class="menu-title">{{ currentUser?.email }}</ion-list-header>
+        </ion-item>
         <ion-menu-toggle auto-hide="false" v-for="(p, i) in appPages" :key="i">
           <ion-item
             @click="selectedIndex = i"
@@ -26,6 +30,15 @@
         </ion-menu-toggle>
       </ion-list>
     </ion-content>
+    <ion-note class="ion-padding ion-text-center"
+      >Made with
+      <ion-icon
+        class="icon-heart"
+        :ios="heartOutline"
+        :md="heartSharp"
+      ></ion-icon>
+      by Chinmay
+    </ion-note>
     <ion-footer style="text-align: center">
       <ion-button @click="doLogout">LOGOUT</ion-button>
     </ion-footer>
@@ -44,7 +57,7 @@ import {
   IonMenuToggle,
   IonNote,
   IonFooter,
-  IonButton
+  IonButton,
 } from "@ionic/vue";
 import { useRoute } from "vue-router";
 import {
@@ -61,7 +74,15 @@ import {
   trashOutline,
   trashSharp,
   warningOutline,
-  warningSharp
+  warningSharp,
+  homeOutline,
+  homeSharp,
+  personOutline,
+  personSharp,
+  calendarOutline,
+  calendarSharp,
+  informationCircleOutline,
+  informationCircleSharp,
 } from "ionicons/icons";
 import store from "../store";
 
@@ -70,23 +91,35 @@ import store from "../store";
  */
 const appPages = [
   {
-    title: "Inbox",
-    url: "/folder/Inbox",
-    iosIcon: mailOutline,
-    mdIcon: mailSharp
+    title: "Home",
+    url: "/folder/Home",
+    iosIcon: homeOutline,
+    mdIcon: homeSharp,
   },
   {
-    title: "Outbox",
-    url: "/folder/Outbox",
-    iosIcon: paperPlaneOutline,
-    mdIcon: paperPlaneSharp
+    title: "Profile",
+    url: "/folder/Profile",
+    iosIcon: personOutline,
+    mdIcon: personSharp,
   },
   {
-    title: "Favorites",
-    url: "/folder/Favorites",
+    title: "Calender",
+    url: "/folder/Calender",
+    iosIcon: calendarOutline,
+    mdIcon: calendarSharp,
+  },
+  {
+    title: "Reporting",
+    url: "/folder/Reporting",
     iosIcon: heartOutline,
-    mdIcon: heartSharp
-  }
+    mdIcon: heartSharp,
+  },
+  {
+    title: "About",
+    url: "/folder/About",
+    iosIcon: informationCircleOutline,
+    mdIcon: informationCircleSharp,
+  },
 ];
 
 export default {
@@ -101,7 +134,7 @@ export default {
     IonMenuToggle,
     IonNote,
     IonFooter,
-    IonButton
+    IonButton,
   },
   computed: {
     /**
@@ -117,7 +150,7 @@ export default {
     },
     currentUser() {
       return store.getters["authentication/currentUser"];
-    }
+    },
   },
   methods: {
     /**
@@ -136,14 +169,14 @@ export default {
       const path = route?.path.split("folder/")[1];
       if (path !== undefined) {
         this.selectedIndex = appPages.findIndex(
-          page => page.title.toLowerCase() === path.toLowerCase()
+          (page) => page.title.toLowerCase() === path.toLowerCase()
         );
       }
     },
     async doLogout() {
       await store.dispatch("authentication/logout", {});
       this.$router.replace("/login");
-    }
+    },
   },
   data() {
     return {
@@ -162,10 +195,18 @@ export default {
       trashOutline,
       trashSharp,
       warningOutline,
-      warningSharp
+      warningSharp,
+      homeOutline,
+      homeSharp,
+      personOutline,
+      personSharp,
+      calendarOutline,
+      calendarSharp,
+      informationCircleOutline,
+      informationCircleSharp,
     };
-  }
-}
+  },
+};
 </script>
 
 <style  scoped>
@@ -186,5 +227,12 @@ ion-menu.ios ion-item.selected ion-icon {
 
 ion-item.selected {
   --color: var(--ion-color-primary);
+}
+
+.icon-heart {
+  vertical-align: middle;
+}
+.menu-title{
+  font-size: 20px;
 }
 </style>

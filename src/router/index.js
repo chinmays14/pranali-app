@@ -22,7 +22,7 @@ const routes = [
   {
     path: '',
     name: "default",
-    redirect: '/folder/Inbox'
+    redirect: '/folder/Home'
   },
   {
     path: '/folder/:id/detail',
