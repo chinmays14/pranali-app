@@ -9,10 +9,11 @@
       <ion-list id="inbox-list">
         <ion-item lines="none">
           <ion-thumbnail>
-            <ion-img :src="'assets/img/pranali.png'">
-            </ion-img>
+            <ion-img :src="'assets/img/pranali.png'"> </ion-img>
           </ion-thumbnail>
-          <ion-list-header class="menu-title">{{ currentUser?.email }}</ion-list-header>
+          <ion-list-header class="menu-title">{{
+            currentUser?.email
+          }}</ion-list-header>
         </ion-item>
         <ion-menu-toggle auto-hide="false" v-for="(p, i) in appPages" :key="i">
           <ion-item
@@ -58,6 +59,8 @@ import {
   IonNote,
   IonFooter,
   IonButton,
+  IonImg,
+  IonThumbnail,
 } from "@ionic/vue";
 import { useRoute } from "vue-router";
 import {
@@ -92,31 +95,31 @@ import store from "../store";
 const appPages = [
   {
     title: "Home",
-    url: "/folder/Home",
+    url: "/home",
     iosIcon: homeOutline,
     mdIcon: homeSharp,
   },
   {
     title: "Profile",
-    url: "/folder/Profile",
+    url: "/profile",
     iosIcon: personOutline,
     mdIcon: personSharp,
   },
   {
-    title: "Calender",
-    url: "/folder/Calender",
+    title: "Calendar",
+    url: "/calendar",
     iosIcon: calendarOutline,
     mdIcon: calendarSharp,
   },
   {
     title: "Reporting",
-    url: "/folder/Reporting",
+    url: "/reporting",
     iosIcon: heartOutline,
     mdIcon: heartSharp,
   },
   {
     title: "About",
-    url: "/folder/About",
+    url: "/about",
     iosIcon: informationCircleOutline,
     mdIcon: informationCircleSharp,
   },
@@ -135,6 +138,8 @@ export default {
     IonNote,
     IonFooter,
     IonButton,
+    IonImg,
+    IonThumbnail,
   },
   computed: {
     /**
@@ -166,7 +171,7 @@ export default {
      */
     handleMenuWillOpen() {
       const route = useRoute();
-      const path = route?.path.split("folder/")[1];
+      const path = route?.path.split("/")[1];
       if (path !== undefined) {
         this.selectedIndex = appPages.findIndex(
           (page) => page.title.toLowerCase() === path.toLowerCase()
@@ -232,7 +237,7 @@ ion-item.selected {
 .icon-heart {
   vertical-align: middle;
 }
-.menu-title{
+.menu-title {
   font-size: 20px;
 }
 </style>

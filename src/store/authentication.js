@@ -85,7 +85,6 @@ const authentication = {
         console.log(state);
       },
       checkAuth(state, payload) {
-        
         state.user = payload.user;
         state.authChecked = payload.authChecked;
         console.log(state);
