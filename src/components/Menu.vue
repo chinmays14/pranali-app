@@ -6,15 +6,25 @@
     :disabled="!showMenu"
   >
     <ion-content>
-      <ion-list id="inbox-list">
-        <ion-item lines="none">
+      <div class="menu-header-bg"></div>
+      <div class="header-content">
+        <img src="assets/img/rotary-wheel.png" alt="" />
+        <ion-label>
+          <h2>{{ currentUser?.email }}</h2>
+          <p>Creator</p>
+        </ion-label>
+      </div>
+
+      <!-- <ion-item lines="none">
           <ion-thumbnail>
             <ion-img :src="'assets/img/pranali.png'"> </ion-img>
           </ion-thumbnail>
           <ion-list-header class="menu-title">{{
             currentUser?.email
           }}</ion-list-header>
-        </ion-item>
+        </ion-item> -->
+
+      <!-- <ion-list id="inbox-list">
         <ion-menu-toggle auto-hide="false" v-for="(p, i) in appPages" :key="i">
           <ion-item
             @click="selectedIndex = i"
@@ -29,6 +39,36 @@
             <ion-label>{{ p.title }}</ion-label>
           </ion-item>
         </ion-menu-toggle>
+      </ion-list> -->
+
+      <ion-list>
+        <template v-for="mn in menu" :key="mn.tag">
+          <ion-item button lines="none" @click="toggleMenu(mn)">
+            <ion-label>{{ mn.title }}</ion-label>
+            <ion-icon
+              :style="{
+                transform: mn.isOpen ? 'rotate(90deg)' : 'rotate(0deg)',
+              }"
+              :class="'menuarrow chevron_' + mn.tag"
+              v-if="mn.children && mn.children.length"
+              :ios="arrowForwardCircleSharp" :mn="arrowForwardCircleOutline"
+              slot="end"
+            ></ion-icon>
+            <ion-icon 
+            slot="start" :ios="mn.iosIcon" :mn="mn.mdIcon"></ion-icon>
+          </ion-item>
+          <ion-item
+            :class="mn.tag"
+            class="submenu ion-padding-start"
+            v-for="ch in mn.children"
+            button
+            lines="none"
+            :key="ch.title"
+          >
+            <ion-label>{{ ch.title }}</ion-label>
+            <ion-icon slot="start" :name="ch.icon"></ion-icon>
+          </ion-item>
+        </template>
       </ion-list>
     </ion-content>
     <ion-note class="ion-padding ion-text-center"
@@ -53,14 +93,14 @@ import {
   IonItem,
   IonLabel,
   IonList,
-  IonListHeader,
+  // IonListHeader,
   IonMenu,
-  IonMenuToggle,
+  // IonMenuToggle,
   IonNote,
   IonFooter,
   IonButton,
-  IonImg,
-  IonThumbnail,
+  // IonImg,
+  // IonThumbnail,
 } from "@ionic/vue";
 import { useRoute } from "vue-router";
 import {
@@ -86,13 +126,15 @@ import {
   calendarSharp,
   informationCircleOutline,
   informationCircleSharp,
+  arrowForwardCircleOutline,
+  arrowForwardCircleSharp
 } from "ionicons/icons";
 import store from "../store";
-
+import { createAnimation } from "@ionic/vue";
 /**
  * the list of paths and titles for the menu items
  */
-const appPages = [
+/* const appPages = [
   {
     title: "Home",
     url: "/home",
@@ -123,6 +165,71 @@ const appPages = [
     iosIcon: informationCircleOutline,
     mdIcon: informationCircleSharp,
   },
+ ]; */
+
+const menu = [
+  {
+    title: "Home",
+    url: "/home",
+    iosIcon: homeOutline,
+    mdIcon: homeSharp,
+  },
+  {
+    title: "Profile",
+    url: "/profile",
+    iosIcon: personOutline,
+    mdIcon: personSharp,
+  },
+  {
+    title: "Club Admin",
+    icon: "add",
+    isOpen: false,
+    tag: "club-admin",
+    children: [
+      {
+        title: "Club",
+        icon: "bookmarks-outline",
+      },
+      {
+        title: "Member",
+        icon: "hammer-outline",
+      },
+      {
+        title: "AARA Nominations",
+        icon: "cube-outline",
+      },
+      {
+        title: "OCV",
+        icon: "cube-outline",
+      },
+      {
+        title: "Pay Dues Online",
+        icon: "cube-outline",
+      },
+      {
+        title: "Receipt",
+        icon: "cube-outline",
+      },
+    ],
+  },
+  {
+    title: "Calendar",
+    url: "/calendar",
+    iosIcon: calendarOutline,
+    mdIcon: calendarSharp,
+  },
+  {
+    title: "Reporting",
+    url: "/reporting",
+    iosIcon: heartOutline,
+    mdIcon: heartSharp,
+  },
+  {
+    title: "About",
+    url: "/about",
+    iosIcon: informationCircleOutline,
+    mdIcon: informationCircleSharp,
+  },
 ];
 
 export default {
@@ -132,14 +239,14 @@ export default {
     IonItem,
     IonLabel,
     IonList,
-    IonListHeader,
+    // IonListHeader,
     IonMenu,
-    IonMenuToggle,
+    // IonMenuToggle,
     IonNote,
     IonFooter,
     IonButton,
-    IonImg,
-    IonThumbnail,
+    // IonImg,
+    // IonThumbnail,
   },
   computed: {
     /**
@@ -169,24 +276,47 @@ export default {
      * the selectedIndex is used to set the styling so you can see
      * the highlighted menu item
      */
-    handleMenuWillOpen() {
-      const route = useRoute();
-      const path = route?.path.split("/")[1];
-      if (path !== undefined) {
-        this.selectedIndex = appPages.findIndex(
-          (page) => page.title.toLowerCase() === path.toLowerCase()
-        );
-      }
-    },
+    // handleMenuWillOpen() {
+    //   const route = useRoute();
+    //   const path = route?.path.split("/")[1];
+    //   if (path !== undefined) {
+    //     this.selectedIndex = appPages.findIndex(
+    //       (page) => page.title.toLowerCase() === path.toLowerCase()
+    //     );
+    //   }
+    // },
     async doLogout() {
       await store.dispatch("authentication/logout", {});
       this.$router.replace("/login");
+    },
+    toggleMenu: function (menu) {
+      const from = menu.isOpen ? "50px" : "0px";
+      const to = menu.isOpen ? "0px" : "50px";
+
+      const fromRotate = menu.isOpen ? "rotate(90deg)" : "rotate(0deg)";
+      const toRotate = menu.isOpen ? "rotate(0deg)" : "rotate(90deg)";
+
+      const animation = createAnimation()
+        .addElement(document.querySelectorAll("." + menu.tag))
+        .duration(300)
+        .fromTo("height", from, to);
+      animation.play();
+
+      const animation2 = createAnimation()
+        .addElement(document.querySelectorAll(".chevron_" + menu.tag))
+        .duration(300)
+        .fromTo("transform", fromRotate, toRotate);
+
+      animation2.play();
+
+      menu.isOpen = !menu.isOpen;
     },
   },
   data() {
     return {
       selectedIndex: 0,
-      appPages,
+      // appPages,
+      menu,
       archiveOutline,
       archiveSharp,
       bookmarkOutline,
@@ -209,12 +339,14 @@ export default {
       calendarSharp,
       informationCircleOutline,
       informationCircleSharp,
+      arrowForwardCircleOutline,
+      arrowForwardCircleSharp
     };
   },
 };
 </script>
 
-<style  scoped>
+<style scoped>
 ion-item.selected {
   --color: var(--ion-color-primary);
 }
@@ -239,5 +371,48 @@ ion-item.selected {
 }
 .menu-title {
   font-size: 20px;
+}
+
+.menu-header-bg {
+  height: 180px;
+  width: 350px;
+  background: #ed576b;
+  background: linear-gradient(90deg, #ed576b 0%, #cf3c4f 100%);
+  box-shadow: 0px 1px 10px rgba(98, 140, 255, 0.5);
+  transform: rotate(-15deg);
+  border-radius: 10px 10px 10px 50px;
+  margin-left: -18px;
+  margin-top: -50px;
+  margin-bottom: 40px;
+}
+</style>
+<style lang="scss" scoped>
+.header-content {
+  position: absolute;
+  top: 30px;
+  left: 15px;
+  display: flex;
+  align-items: center;
+
+  img {
+    width: 80px;
+    height: 80px;
+    background: #fff;
+    border-radius: 50%;
+    padding: 5px;
+    margin-right: 14px;
+    // border: 7px solid #ed576b;
+  }
+
+  h2 {
+    font-weight: 300;
+    color: #fff;
+  }
+  p {
+    font-size: 12px;
+    color: #e4e4e4;
+    font-weight: 100;
+    letter-spacing: 0.4px;
+  }
 }
 </style>
