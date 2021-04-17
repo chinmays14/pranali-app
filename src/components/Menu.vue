@@ -43,19 +43,21 @@
 
       <ion-list>
         <template v-for="mn in menu" :key="mn.tag">
-          <ion-item button lines="none" @click="toggleMenu(mn)">
+          <ion-item button lines="none" @click="toggleMenu(mn)"
+          router-direction="root"
+            :router-link="mn.url"
+          >
+            <ion-icon slot="start" :ios="mn.iosIcon" :mn="mn.mdIcon"></ion-icon>
             <ion-label>{{ mn.title }}</ion-label>
             <ion-icon
               :style="{
                 transform: mn.isOpen ? 'rotate(90deg)' : 'rotate(0deg)',
               }"
-              :class="'menuarrow chevron_' + mn.tag"
               v-if="mn.children && mn.children.length"
-              :ios="arrowForwardCircleSharp" :mn="arrowForwardCircleOutline"
+              :ios="arrowForwardCircleOutline"
+              :mn="arrowForwardCircleSharp"
               slot="end"
             ></ion-icon>
-            <ion-icon 
-            slot="start" :ios="mn.iosIcon" :mn="mn.mdIcon"></ion-icon>
           </ion-item>
           <ion-item
             :class="mn.tag"
@@ -64,9 +66,11 @@
             button
             lines="none"
             :key="ch.title"
+            router-direction="root"
+            :router-link="ch.url"
           >
             <ion-label>{{ ch.title }}</ion-label>
-            <ion-icon slot="start" :name="ch.icon"></ion-icon>
+            <ion-icon slot="start" :ios="ch.iosIcon" :mn="ch.mdIcon"></ion-icon>
           </ion-item>
         </template>
       </ion-list>
@@ -93,14 +97,10 @@ import {
   IonItem,
   IonLabel,
   IonList,
-  // IonListHeader,
   IonMenu,
-  // IonMenuToggle,
   IonNote,
   IonFooter,
   IonButton,
-  // IonImg,
-  // IonThumbnail,
 } from "@ionic/vue";
 import { useRoute } from "vue-router";
 import {
@@ -127,7 +127,43 @@ import {
   informationCircleOutline,
   informationCircleSharp,
   arrowForwardCircleOutline,
-  arrowForwardCircleSharp
+  arrowForwardCircleSharp,
+  constructOutline,
+  constructSharp,
+  bookOutline,
+  bookSharp,
+  cogOutline,
+  cogSharp,
+  gridOutline,
+  gridSharp,
+  statsChartOutline,
+  statsChartSharp,
+  shareSocialOutline,
+  shareSocialSharp,
+  personAddOutline,
+  personAddSharp,
+  trophyOutline,
+  trophySharp,
+  peopleOutline,
+  peopleSharp,
+  personCircleOutline,
+  personCircleSharp,
+  checkmarkDoneOutline,
+  checkmarkDoneSharp,
+  cashOutline,
+  cashSharp,
+  receiptOutline,
+  receiptSharp,
+  readerOutline,
+  readerSharp,
+  ribbonOutline,
+  ribbonSharp,
+  todayOutline,
+  todaySharp,
+  appsOutline,
+  appsSharp,
+  fileTrayFullOutline,
+  fileTrayFullSharp,
 } from "ionicons/icons";
 import store from "../store";
 import { createAnimation } from "@ionic/vue";
@@ -182,47 +218,128 @@ const menu = [
   },
   {
     title: "Club Admin",
-    icon: "add",
+    url: "/reporting",
+    iosIcon: appsOutline,
+    mdIcon: appsSharp,
     isOpen: false,
     tag: "club-admin",
     children: [
       {
         title: "Club",
-        icon: "bookmarks-outline",
+        url: "/reporting",
+        iosIcon: peopleOutline,
+        mdIcon: peopleSharp,
       },
       {
         title: "Member",
-        icon: "hammer-outline",
+        url: "/reporting",
+        iosIcon: personCircleOutline,
+        mdIcon: personCircleSharp,
       },
       {
         title: "AARA Nominations",
-        icon: "cube-outline",
+        url: "/reporting",
+        iosIcon: trophyOutline,
+        mdIcon: trophySharp,
       },
       {
         title: "OCV",
-        icon: "cube-outline",
+        url: "/reporting",
+        iosIcon: checkmarkDoneOutline,
+        mdIcon: checkmarkDoneSharp,
       },
       {
         title: "Pay Dues Online",
-        icon: "cube-outline",
+        url: "/reporting",
+        iosIcon: cashOutline,
+        mdIcon: cashSharp,
       },
       {
         title: "Receipt",
-        icon: "cube-outline",
+        url: "/reporting",
+        iosIcon: receiptOutline,
+        mdIcon: receiptSharp,
       },
     ],
   },
   {
-    title: "Calendar",
-    url: "/calendar",
-    iosIcon: calendarOutline,
-    mdIcon: calendarSharp,
-  },
-  {
     title: "Reporting",
     url: "/reporting",
-    iosIcon: heartOutline,
-    mdIcon: heartSharp,
+    iosIcon: fileTrayFullOutline,
+    mdIcon: fileTrayFullSharp,
+    isOpen: false,
+    tag: "reporting",
+    children: [
+      {
+        title: "Project",
+        url: "/reporting",
+        iosIcon: readerOutline,
+        mdIcon: readerSharp,
+      },
+      {
+        title: "Meeting",
+        url: "/reporting",
+        iosIcon: todayOutline,
+        mdIcon: todaySharp,
+      },
+      {
+        title: "Ambassadorial Report",
+        url: "/reporting",
+        iosIcon: ribbonOutline,
+        mdIcon: ribbonSharp,
+      },
+    ],
+  },
+  {
+    title: "Tools",
+    iosIcon: constructOutline,
+    mdIcon: constructSharp,
+    isOpen: false,
+    tag: "tools",
+    children: [
+      {
+        title: "E-Directory",
+        url: "/home",
+        iosIcon: bookOutline,
+        mdIcon: bookSharp,
+      },
+      {
+        title: "Insight Engine",
+        url: "/home",
+        iosIcon: cogOutline,
+        mdIcon: cogSharp,
+      },
+      {
+        title: "Dashboard",
+        url: "/home",
+        iosIcon: gridOutline,
+        mdIcon: gridSharp,
+      },
+      {
+        title: "Event Calendar",
+        url: "/calendar",
+        iosIcon: calendarOutline,
+        mdIcon: calendarSharp,
+      },
+      {
+        title: "Leaderboard",
+        url: "/home",
+        iosIcon: statsChartOutline,
+        mdIcon: statsChartSharp,
+      },
+      {
+        title: "Social Wall",
+        url: "/home",
+        iosIcon: shareSocialOutline,
+        mdIcon: shareSocialSharp,
+      },
+      {
+        title: "Pranali user Registration",
+        url: "/home",
+        iosIcon: personAddOutline,
+        mdIcon: personAddSharp,
+      },
+    ],
   },
   {
     title: "About",
@@ -239,14 +356,10 @@ export default {
     IonItem,
     IonLabel,
     IonList,
-    // IonListHeader,
     IonMenu,
-    // IonMenuToggle,
     IonNote,
     IonFooter,
     IonButton,
-    // IonImg,
-    // IonThumbnail,
   },
   computed: {
     /**
@@ -315,7 +428,6 @@ export default {
   data() {
     return {
       selectedIndex: 0,
-      // appPages,
       menu,
       archiveOutline,
       archiveSharp,
@@ -340,7 +452,43 @@ export default {
       informationCircleOutline,
       informationCircleSharp,
       arrowForwardCircleOutline,
-      arrowForwardCircleSharp
+      arrowForwardCircleSharp,
+      constructOutline,
+      constructSharp,
+      bookOutline,
+      bookSharp,
+      cogOutline,
+      cogSharp,
+      gridOutline,
+      gridSharp,
+      statsChartOutline,
+      statsChartSharp,
+      shareSocialOutline,
+      shareSocialSharp,
+      personAddOutline,
+      personAddSharp,
+      trophyOutline,
+      trophySharp,
+      peopleOutline,
+      peopleSharp,
+      personCircleOutline,
+      personCircleSharp,
+      checkmarkDoneOutline,
+      checkmarkDoneSharp,
+      cashOutline,
+      cashSharp,
+      receiptOutline,
+      receiptSharp,
+      readerOutline,
+      readerSharp,
+      ribbonOutline,
+      ribbonSharp,
+      todayOutline,
+      todaySharp,
+      appsOutline,
+      appsSharp,
+      fileTrayFullOutline,
+      fileTrayFullSharp,
     };
   },
 };
@@ -384,6 +532,9 @@ ion-item.selected {
   margin-left: -18px;
   margin-top: -50px;
   margin-bottom: 40px;
+}
+ion-item.submenu {
+  height: 0px;
 }
 </style>
 <style lang="scss" scoped>
