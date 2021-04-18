@@ -5,33 +5,17 @@
         <ion-buttons slot="start">
           <ion-menu-button color="primary-contrast"></ion-menu-button>
         </ion-buttons>
-        <ion-title>Reporting</ion-title>
+        <ion-title>Meeting</ion-title>
       </ion-toolbar>
     </ion-header>
 
     <ion-content :fullscreen="true">
       <ion-header collapse="condense">
         <ion-toolbar>
-          <ion-title size="large">Reporting</ion-title>
+          <ion-title size="large">Meeting</ion-title>
         </ion-toolbar>
       </ion-header>
 
-      <div id="container">
-        <strong class="capitalize">Reporting Component</strong>
-        <p>
-          Explore
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://ionicframework.com/docs/components"
-            >UI Components</a
-          >
-        </p>
-        <!-- when user clicks button push to the next route -->
-        <ion-button @click="$router.push(`/reporting/detail`)"
-          >DETAIL PAGE</ion-button
-        >
-      </div>
     </ion-content>
   </ion-page>
 </template>
@@ -45,13 +29,10 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
-  IonButton
 } from "@ionic/vue";
 
-// there is no code here because everthing that is logic
-// is handled in the template
 export default {
-  name: "Reporting",
+  name: "Profile",
   components: {
     IonButtons,
     IonContent,
@@ -60,7 +41,6 @@ export default {
     IonPage,
     IonTitle,
     IonToolbar,
-    IonButton
   }
 }
 </script>

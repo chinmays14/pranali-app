@@ -4,7 +4,7 @@
   </base-layout>
 </template>
 <script>
-import CreateMemoryForm from "../components/memories/CreateMemoryForm.vue";
+import CreateMemoryForm from "./CreateMemoryForm.vue";
 export default {
   components: { CreateMemoryForm },
   methods: {

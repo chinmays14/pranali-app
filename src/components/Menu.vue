@@ -15,15 +15,6 @@
         </ion-label>
       </div>
 
-      <!-- <ion-item lines="none">
-          <ion-thumbnail>
-            <ion-img :src="'assets/img/pranali.png'"> </ion-img>
-          </ion-thumbnail>
-          <ion-list-header class="menu-title">{{
-            currentUser?.email
-          }}</ion-list-header>
-        </ion-item> -->
-
       <!-- <ion-list id="inbox-list">
         <ion-menu-toggle auto-hide="false" v-for="(p, i) in appPages" :key="i">
           <ion-item
@@ -42,10 +33,16 @@
       </ion-list> -->
 
       <ion-list>
-        <template v-for="mn in menu" :key="mn.tag">
-          <ion-item button lines="none" @click="toggleMenu(mn)"
-          router-direction="root"
+        <template v-for="(mn, i) in menu" :key="i">
+          <ion-item
+            button
+            lines="none"
+            @click="toggleMenu(mn), (selectedIndex = mn.title)"
+            router-direction="root"
             :router-link="mn.url"
+            class="hydrated"
+            :class="{ selected: selectedIndex === mn.title }"
+            detail="false"
           >
             <ion-icon slot="start" :ios="mn.iosIcon" :mn="mn.mdIcon"></ion-icon>
             <ion-label>{{ mn.title }}</ion-label>
@@ -60,14 +57,16 @@
             ></ion-icon>
           </ion-item>
           <ion-item
-            :class="mn.tag"
             class="submenu ion-padding-start"
-            v-for="ch in mn.children"
+            v-for="(ch, j) in mn.children"
+            @click="selectedIndex = ch.title"
+            :class="[{ selected: selectedIndex === ch.title }, mn.tag]"
             button
             lines="none"
-            :key="ch.title"
+            :key="j"
             router-direction="root"
             :router-link="ch.url"
+            detail="false"
           >
             <ion-label>{{ ch.title }}</ion-label>
             <ion-icon slot="start" :ios="ch.iosIcon" :mn="ch.mdIcon"></ion-icon>
@@ -167,41 +166,6 @@ import {
 } from "ionicons/icons";
 import store from "../store";
 import { createAnimation } from "@ionic/vue";
-/**
- * the list of paths and titles for the menu items
- */
-/* const appPages = [
-  {
-    title: "Home",
-    url: "/home",
-    iosIcon: homeOutline,
-    mdIcon: homeSharp,
-  },
-  {
-    title: "Profile",
-    url: "/profile",
-    iosIcon: personOutline,
-    mdIcon: personSharp,
-  },
-  {
-    title: "Calendar",
-    url: "/calendar",
-    iosIcon: calendarOutline,
-    mdIcon: calendarSharp,
-  },
-  {
-    title: "Reporting",
-    url: "/reporting",
-    iosIcon: heartOutline,
-    mdIcon: heartSharp,
-  },
-  {
-    title: "About",
-    url: "/about",
-    iosIcon: informationCircleOutline,
-    mdIcon: informationCircleSharp,
-  },
- ]; */
 
 const menu = [
   {
@@ -218,7 +182,7 @@ const menu = [
   },
   {
     title: "Club Admin",
-    url: "/reporting",
+    // url: "/club-admin",
     iosIcon: appsOutline,
     mdIcon: appsSharp,
     isOpen: false,
@@ -226,37 +190,37 @@ const menu = [
     children: [
       {
         title: "Club",
-        url: "/reporting",
+        url: "/club-admin/club",
         iosIcon: peopleOutline,
         mdIcon: peopleSharp,
       },
       {
         title: "Member",
-        url: "/reporting",
+        url: "/club-admin/member",
         iosIcon: personCircleOutline,
         mdIcon: personCircleSharp,
       },
       {
         title: "AARA Nominations",
-        url: "/reporting",
+        url: "/club-admin/aara-nom",
         iosIcon: trophyOutline,
         mdIcon: trophySharp,
       },
       {
         title: "OCV",
-        url: "/reporting",
+        url: "/club-admin/ocv",
         iosIcon: checkmarkDoneOutline,
         mdIcon: checkmarkDoneSharp,
       },
       {
         title: "Pay Dues Online",
-        url: "/reporting",
+        url: "/club-admin/pay-dues",
         iosIcon: cashOutline,
         mdIcon: cashSharp,
       },
       {
         title: "Receipt",
-        url: "/reporting",
+        url: "/club-admin/receipt",
         iosIcon: receiptOutline,
         mdIcon: receiptSharp,
       },
@@ -264,7 +228,7 @@ const menu = [
   },
   {
     title: "Reporting",
-    url: "/reporting",
+    // url: "/reporting",
     iosIcon: fileTrayFullOutline,
     mdIcon: fileTrayFullSharp,
     isOpen: false,
@@ -272,19 +236,19 @@ const menu = [
     children: [
       {
         title: "Project",
-        url: "/reporting",
+        url: "/reporting/project",
         iosIcon: readerOutline,
         mdIcon: readerSharp,
       },
       {
         title: "Meeting",
-        url: "/reporting",
+        url: "/reporting/meeting",
         iosIcon: todayOutline,
         mdIcon: todaySharp,
       },
       {
         title: "Ambassadorial Report",
-        url: "/reporting",
+        url: "/reporting/ambassadorial",
         iosIcon: ribbonOutline,
         mdIcon: ribbonSharp,
       },
@@ -299,43 +263,43 @@ const menu = [
     children: [
       {
         title: "E-Directory",
-        url: "/home",
+        url: "/tool/e-directory",
         iosIcon: bookOutline,
         mdIcon: bookSharp,
       },
       {
         title: "Insight Engine",
-        url: "/home",
+        url: "/tool/insight-engine",
         iosIcon: cogOutline,
         mdIcon: cogSharp,
       },
       {
         title: "Dashboard",
-        url: "/home",
+        url: "/tool/dashboard",
         iosIcon: gridOutline,
         mdIcon: gridSharp,
       },
       {
         title: "Event Calendar",
-        url: "/calendar",
+        url: "/tool/calendar",
         iosIcon: calendarOutline,
         mdIcon: calendarSharp,
       },
       {
         title: "Leaderboard",
-        url: "/home",
+        url: "/tool/leaderboard",
         iosIcon: statsChartOutline,
         mdIcon: statsChartSharp,
       },
       {
         title: "Social Wall",
-        url: "/home",
+        url: "/tool/social-wall",
         iosIcon: shareSocialOutline,
         mdIcon: shareSocialSharp,
       },
       {
         title: "Pranali user Registration",
-        url: "/home",
+        url: "/tool/pranali-user-registration",
         iosIcon: personAddOutline,
         mdIcon: personAddSharp,
       },
@@ -378,26 +342,15 @@ export default {
     },
   },
   methods: {
-    /**
-     * connected to the menu ionWillOpen event.
-     *
-     * this will be called to check the path that is set in the route.
-     * then loop through the predefined paths in the appPages property
-     * to see if there is a match and if so then set that as the
-     * selectedIndex
-     *
-     * the selectedIndex is used to set the styling so you can see
-     * the highlighted menu item
-     */
-    // handleMenuWillOpen() {
-    //   const route = useRoute();
-    //   const path = route?.path.split("/")[1];
-    //   if (path !== undefined) {
-    //     this.selectedIndex = appPages.findIndex(
-    //       (page) => page.title.toLowerCase() === path.toLowerCase()
-    //     );
-    //   }
-    // },
+    handleMenuWillOpen() {
+      const route = useRoute();
+      const path = route?.path.split("/")[1];
+      if (path !== undefined) {
+        this.selectedIndex = menu.findIndex(
+          (page) => page.title.toLowerCase() === path.toLowerCase()
+        );
+      }
+    },
     async doLogout() {
       await store.dispatch("authentication/logout", {});
       this.$router.replace("/login");
